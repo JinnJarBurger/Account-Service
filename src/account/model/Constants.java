@@ -8,6 +8,10 @@ import java.util.List;
  */
 public interface Constants {
 
+    String ADMINISTRATOR = "ADMINISTRATOR";
+    String ACCOUNTANT = "ACCOUNTANT";
+    String USER = "USER";
+
     List<String> breachedPasswords = List.of(
             "PasswordForJanuary",
             "PasswordForFebruary",

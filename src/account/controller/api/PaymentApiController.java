@@ -14,7 +14,7 @@ import java.util.Map;
  * @since 12/3/2022
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/acct")
 public class PaymentApiController {
 
     PaymentService paymentService;
@@ -23,7 +23,7 @@ public class PaymentApiController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/acct/payments")
+    @PostMapping("/payments")
     public Map<String, String> uploadPayrolls(@Valid @RequestBody @NotEmpty
                                               List<@Valid Payment> payments) {
 
@@ -35,8 +35,8 @@ public class PaymentApiController {
         );
     }
 
-    @PutMapping("/acct/payments")
-    public Map<String, String> updatePayroll(@RequestBody Payment payment) {
+    @PutMapping("/payments")
+    public Map<String, String> updatePayroll(@Valid @RequestBody Payment payment) {
         paymentService.updateSalary(payment);
 
         return Map.of(

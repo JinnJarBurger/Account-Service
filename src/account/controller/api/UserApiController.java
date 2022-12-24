@@ -18,7 +18,7 @@ import java.util.Map;
  * @since 11/16/2022
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class UserApiController {
 
     UserService userService;
@@ -29,14 +29,14 @@ public class UserApiController {
         this.accessManager = accessManager;
     }
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public User signUp(@Valid @RequestBody User user) {
         accessManager.checkEmailAndPassword(user);
 
         return userService.saveOrUpdate(user);
     }
 
-    @PostMapping("/auth/changepass")
+    @PostMapping("/changepass")
     public Map<String, String> changePassword(@Valid @RequestBody NewPasswordDto newPasswordDto, Principal principal) {
         accessManager.checkIsPasswordBreached(newPasswordDto.getPassword());
         userService.changePassword(newPasswordDto, principal);

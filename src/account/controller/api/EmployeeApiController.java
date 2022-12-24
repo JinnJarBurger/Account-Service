@@ -17,7 +17,7 @@ import java.util.Date;
  * @since 11/30/2022
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/empl")
 public class EmployeeApiController {
 
     UserService userService;
@@ -28,7 +28,7 @@ public class EmployeeApiController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/empl/payment")
+    @GetMapping("/payment")
     public Object getPayment(@RequestParam(required = false)
                              @DateTimeFormat(pattern = "MM-yyyy", iso = DateTimeFormat.ISO.DATE)
                              Date period,

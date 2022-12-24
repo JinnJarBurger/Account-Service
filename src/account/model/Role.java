@@ -1,5 +1,6 @@
 package account.model;
 
+import account.repository.RoleRepository;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import javax.persistence.*;
 @Table(name = "role")
 public class Role {
 
+    public static final String ROLE_PREFIX = "ROLE_";
     public static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR";
     public static final String ROLE_ACCOUNTANT = "ROLE_ACCOUNTANT";
     public static final String ROLE_USER = "ROLE_USER";
@@ -26,4 +28,8 @@ public class Role {
     private Long id;
 
     private String name;
+
+    public Role(String name) {
+        this.name = name;
+    }
 }

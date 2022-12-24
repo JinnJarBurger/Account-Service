@@ -1,7 +1,9 @@
 package account.model;
 
+import account.service.CustomRoleSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -52,6 +54,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonSerialize(using = CustomRoleSerializer.class)
     private Set<Role> roles;
 
     public User() {
