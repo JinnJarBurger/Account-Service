@@ -1,6 +1,6 @@
 package account.service;
 
-import account.model.NewPassword;
+import account.model.NewPasswordDto;
 import account.model.User;
 import account.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -27,14 +27,14 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public void changePassword(NewPassword newPassword, Principal principal) {
+    public void changePassword(NewPasswordDto newPasswordDto, Principal principal) {
         User user = findByEmail(principal.getName());
 
-        if (encoder.matches(newPassword.getPassword(), user.getPassword())) {
+        if (encoder.matches(newPasswordDto.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The passwords must be different!");
         }
 
-        user.setPassword(encoder.encode(newPassword.getPassword()));
+        user.setPassword(encoder.encode(newPasswordDto.getPassword()));
         saveOrUpdate(user);
     }
 

@@ -1,6 +1,6 @@
 package account.service;
 
-import account.model.EmployeeCmd;
+import account.model.EmployeeDto;
 import account.model.Payment;
 import account.model.User;
 import account.repository.PaymentRepository;
@@ -40,10 +40,10 @@ public class PaymentService {
         });
     }
 
-    public EmployeeCmd getPaymentInfo(User user, Date period) {
+    public EmployeeDto getPaymentInfo(User user, Date period) {
         Payment payment = findByEmployeeAndPeriod(user.getEmail().toLowerCase(), period);
 
-        return EmployeeCmd.builder()
+        return EmployeeDto.builder()
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .period(new SimpleDateFormat("MMMM-yyyy").format(payment.getPeriod()))
@@ -51,9 +51,9 @@ public class PaymentService {
                 .build();
     }
 
-    public List<EmployeeCmd> getAllPaymentInfo(User user) {
+    public List<EmployeeDto> getAllPaymentInfo(User user) {
         return findAllByEmail(user.getEmail().toLowerCase()).stream()
-                .map(payment -> EmployeeCmd.builder()
+                .map(payment -> EmployeeDto.builder()
                         .name(user.getName())
                         .lastname(user.getLastname())
                         .period(new SimpleDateFormat("MMMM-yyyy").format(payment.getPeriod()))

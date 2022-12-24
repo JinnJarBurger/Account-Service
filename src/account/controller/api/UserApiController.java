@@ -1,6 +1,6 @@
 package account.controller.api;
 
-import account.model.NewPassword;
+import account.model.NewPasswordDto;
 import account.model.User;
 import account.service.AccessManager;
 import account.service.UserService;
@@ -37,9 +37,9 @@ public class UserApiController {
     }
 
     @PostMapping("/auth/changepass")
-    public Map<String, String> changePassword(@Valid @RequestBody NewPassword newPassword, Principal principal) {
-        accessManager.checkIsPasswordBreached(newPassword.getPassword());
-        userService.changePassword(newPassword, principal);
+    public Map<String, String> changePassword(@Valid @RequestBody NewPasswordDto newPasswordDto, Principal principal) {
+        accessManager.checkIsPasswordBreached(newPasswordDto.getPassword());
+        userService.changePassword(newPasswordDto, principal);
 
         return Map.of(
                 "email", principal.getName(),
