@@ -2,6 +2,7 @@ package account.controller.api;
 
 import account.model.Payment;
 import account.service.PaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,11 +18,8 @@ import java.util.Map;
 @RequestMapping("/api/acct")
 public class PaymentApiController {
 
-    PaymentService paymentService;
-
-    public PaymentApiController(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
+    @Autowired
+    private PaymentService paymentService;
 
     @PostMapping("/payments")
     public Map<String, String> uploadPayrolls(@Valid @RequestBody @NotEmpty

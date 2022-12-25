@@ -1,6 +1,5 @@
 package account.model;
 
-import account.repository.RoleRepository;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +19,7 @@ public class Role {
 
     public static final String ROLE_PREFIX = "ROLE_";
     public static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR";
+    public static final String ROLE_AUDITOR = "ROLE_AUDITOR";
     public static final String ROLE_ACCOUNTANT = "ROLE_ACCOUNTANT";
     public static final String ROLE_USER = "ROLE_USER";
 
@@ -27,6 +27,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     public Role(String name) {

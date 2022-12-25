@@ -4,6 +4,7 @@ import account.model.NewPasswordDto;
 import account.model.User;
 import account.service.AccessManager;
 import account.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +22,11 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class UserApiController {
 
-    UserService userService;
-    AccessManager accessManager;
+    @Autowired
+    private UserService userService;
 
-    public UserApiController(UserService userService, AccessManager accessManager) {
-        this.userService = userService;
-        this.accessManager = accessManager;
-    }
+    @Autowired
+    private AccessManager accessManager;
 
     @PostMapping("/signup")
     public User signUp(@Valid @RequestBody User user) {

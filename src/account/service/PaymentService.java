@@ -5,6 +5,7 @@ import account.model.Payment;
 import account.model.User;
 import account.repository.PaymentRepository;
 import account.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,13 +23,11 @@ import java.util.stream.Collectors;
 @Service
 public class PaymentService {
 
-    PaymentRepository paymentRepository;
-    UserRepository userRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
-    public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository) {
-        this.paymentRepository = paymentRepository;
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     public void checkEmployeeExists(List<Payment> payments) {
         payments.forEach(payment -> {

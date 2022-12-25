@@ -2,6 +2,7 @@ package account.service;
 
 import account.model.User;
 import account.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,11 +16,8 @@ import static account.model.Constants.breachedPasswords;
 @Service
 public class AccessManager {
 
-    UserRepository userRepository;
-
-    public AccessManager(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     public void checkEmailAndPassword(User user) {
         checkDuplicateEmail(user.getEmail());

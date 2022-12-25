@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,6 +57,18 @@ public class User {
     )
     @JsonSerialize(using = CustomRoleSerializer.class)
     private Set<Role> roles;
+
+    @JsonIgnore
+    @Column(name = "account_non_locked", columnDefinition = "boolean default true")
+    private boolean accountNonLocked;
+
+    @JsonIgnore
+    @Column(name = "failed_attempt")
+    private int failedAttempt;
+
+    @JsonIgnore
+    @Column(name = "lock_time")
+    private Date lockTime;
 
     public User() {
         roles = new HashSet<>();

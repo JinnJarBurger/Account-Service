@@ -3,6 +3,7 @@ package account.controller.api;
 import account.model.RoleChangeDto;
 import account.model.User;
 import account.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,11 +18,8 @@ import java.util.Map;
 @RequestMapping("/api/admin")
 public class AdminApiController {
 
-    UserService userService;
-
-    public AdminApiController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/user")
     public List<User> getAllUsers() {

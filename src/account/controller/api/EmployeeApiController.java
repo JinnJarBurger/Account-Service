@@ -3,6 +3,7 @@ package account.controller.api;
 import account.model.User;
 import account.service.PaymentService;
 import account.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +21,11 @@ import java.util.Date;
 @RequestMapping("/api/empl")
 public class EmployeeApiController {
 
-    UserService userService;
-    PaymentService paymentService;
+    @Autowired
+    private UserService userService;
 
-    public EmployeeApiController(UserService userService, PaymentService paymentService) {
-        this.userService = userService;
-        this.paymentService = paymentService;
-    }
+    @Autowired
+    private PaymentService paymentService;
 
     @GetMapping("/payment")
     public Object getPayment(@RequestParam(required = false)

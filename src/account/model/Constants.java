@@ -9,6 +9,7 @@ import java.util.List;
 public interface Constants {
 
     String ADMINISTRATOR = "ADMINISTRATOR";
+    String AUDITOR = "AUDITOR";
     String ACCOUNTANT = "ACCOUNTANT";
     String USER = "USER";
 

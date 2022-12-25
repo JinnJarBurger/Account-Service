@@ -3,6 +3,7 @@ package account.service;
 import account.model.*;
 import account.repository.RoleRepository;
 import account.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,14 @@ import static account.model.Role.*;
 @Service
 public class UserService {
 
-    UserRepository userRepository;
-    RoleRepository roleRepository;
-    PasswordEncoder encoder;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
-    }
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     public User changeRole(RoleChangeDto roleChangeDto) {
         String email = roleChangeDto.getUser();
@@ -40,7 +40,7 @@ public class UserService {
         Operation operation = roleChangeDto.getOperation();
 
         User user = findByEmail(email);
-        Role role = roleRepository.findTopByName(roleName)
+        Role role = roleRepository.findByName(roleName)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found!"));
 
         if (operation == GRANT) {
@@ -83,6 +83,14 @@ public class UserService {
         saveOrUpdate(user);
     }
 
+    public void increaseFailedAttempts(User user) {
+        userRepository.updateFailedAttempts(user.getFailedAttempt() + 1, user.getEmail());
+    }
+
+    public void resetFailedAttempts(String email) {
+        userRepository.updateFailedAttempts(0, email);
+    }
+
     public List<User> findAll() {
         return userRepository.findAllByOrderByIdAsc();
     }
@@ -103,8 +111,8 @@ public class UserService {
             user.setEmail(user.getEmail().toLowerCase());
             user.setPassword(encoder.encode(user.getPassword()));
             user.setRoles(userRepository.count() == 0
-                    ? Set.of(roleRepository.findTopByName(ROLE_ADMINISTRATOR).orElse(new Role(ROLE_ADMINISTRATOR)))
-                    : Set.of(roleRepository.findTopByName(ROLE_USER).orElse(new Role(ROLE_USER))));
+                    ? Set.of(roleRepository.findByName(ROLE_ADMINISTRATOR).orElse(new Role(ROLE_ADMINISTRATOR)))
+                    : Set.of(roleRepository.findByName(ROLE_USER).orElse(new Role(ROLE_USER))));
         }
 
         return userRepository.save(user);
