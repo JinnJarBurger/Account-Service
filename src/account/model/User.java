@@ -59,6 +59,9 @@ public class User {
     private Set<Role> roles;
 
     @JsonIgnore
+    private boolean enabled;
+
+    @JsonIgnore
     @Column(name = "account_non_locked", columnDefinition = "boolean default true")
     private boolean accountNonLocked;
 

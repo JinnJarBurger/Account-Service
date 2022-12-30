@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,9 @@ import static account.model.Role.*;
  */
 @Service
 public class UserService {
+
+    public static final int MAX_FAILED_ATTEMPTS = 3;
+    public static final long LOCK_TIME_DURATION = 24 * 60 * 60 * 1000;
 
     @Autowired
     private UserRepository userRepository;
@@ -89,6 +93,31 @@ public class UserService {
 
     public void resetFailedAttempts(String email) {
         userRepository.updateFailedAttempts(0, email);
+    }
+
+    public void lock(User user) {
+        user.setAccountNonLocked(false);
+        user.setLockTime(new Date());
+
+        userRepository
+                .save(user);
+    }
+
+    public boolean unlockWhenTimeExpired(User user) {
+        long lockTimeInMillis = user.getLockTime().getTime();
+        long currentTimeInMillis = System.currentTimeMillis();
+
+        if (lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis) {
+            user.setAccountNonLocked(true);
+            user.setLockTime(null);
+            user.setFailedAttempt(0);
+
+            userRepository.save(user);
+
+            return true;
+        }
+
+        return false;
     }
 
     public List<User> findAll() {
