@@ -7,5 +7,7 @@ package account.model;
 public enum Operation {
 
     GRANT,
-    REMOVE
+    REMOVE,
+    LOCK,
+    UNLOCK
 }

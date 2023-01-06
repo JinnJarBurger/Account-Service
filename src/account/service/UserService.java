@@ -87,6 +87,26 @@ public class UserService {
         saveOrUpdate(user);
     }
 
+    public void changeLockStatus(String email, Operation operation) {
+        User user = findByEmail(email);
+
+        if (user.isAdmin()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't lock the ADMINISTRATOR!");
+        }
+
+        switch (operation) {
+            case LOCK:
+                lock(user);
+                break;
+            case UNLOCK:
+                unlock(user);
+                break;
+            case GRANT:
+            case REMOVE:
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Operation!");
+        }
+    }
+
     public void increaseFailedAttempts(User user) {
         userRepository.updateFailedAttempts(user.getFailedAttempt() + 1, user.getEmail());
     }
@@ -99,8 +119,15 @@ public class UserService {
         user.setAccountNonLocked(false);
         user.setLockTime(new Date());
 
-        userRepository
-                .save(user);
+        userRepository.save(user);
+    }
+
+    public void unlock(User user) {
+        user.setAccountNonLocked(true);
+        user.setLockTime(null);
+        user.setFailedAttempt(0);
+
+        userRepository.save(user);
     }
 
     public boolean unlockWhenTimeExpired(User user) {
@@ -108,11 +135,7 @@ public class UserService {
         long currentTimeInMillis = System.currentTimeMillis();
 
         if (lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis) {
-            user.setAccountNonLocked(true);
-            user.setLockTime(null);
-            user.setFailedAttempt(0);
-
-            userRepository.save(user);
+            unlock(user);
 
             return true;
         }

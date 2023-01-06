@@ -24,7 +24,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            RestAuthenticationEntryPoint authenticationEntryPoint,
-                                           RestAccessDeniedHandler accessDeniedHandler) throws Exception {
+                                           RestAccessDeniedHandler accessDeniedHandler,
+                                           RestAuthenticationSuccessEventListener authenticationSuccessHandler,
+                                           RestAuthenticationFailureListener authenticationFailureHandler) throws Exception {
 
         http
                 .httpBasic()

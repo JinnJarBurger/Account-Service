@@ -6,6 +6,7 @@ import account.model.RoleChangeDto;
 import account.model.User;
 import account.service.EventLogger;
 import account.service.UserService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +67,17 @@ public class AdminApiController {
                         + user.getEmail());
 
         return user;
+    }
+
+    @PutMapping("/user/access")
+    public Map<String, String> setLockStatus(@RequestBody ObjectNode json) {
+        String email = json.get("user").asText(null);
+        Operation operation = Operation.valueOf(json.get("operation").asText(null));
+
+        userService.changeLockStatus(email, operation);
+
+        return Map.of(
+                "status", "User " + email + " " + operation.name().toLowerCase() + "ed!"
+        );
     }
 }

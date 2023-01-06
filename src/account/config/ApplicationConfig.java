@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.web.context.request.RequestContextListener;
 
 import java.text.SimpleDateFormat;
 
@@ -24,5 +25,10 @@ public class ApplicationConfig {
                 .setDateFormat(new SimpleDateFormat("MM-yyyy"))
                 .setDefaultLeniency(false)
                 .enable(SerializationFeature.INDENT_OUTPUT);
+    }
+
+    @Bean
+    public RequestContextListener requestContextListener() {
+        return new RequestContextListener();
     }
 }
